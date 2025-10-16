@@ -30,6 +30,24 @@ const Dashboard = () => {
       date: new Date(),
       completed: false,
     },
+    {
+      id: '3',
+      title: 'Study programming for 2 hours',
+      date: new Date(Date.now() - 86400000), // Yesterday
+      completed: false,
+    },
+    {
+      id: '4',
+      title: 'Evening meditation',
+      date: new Date(Date.now() - 86400000), // Yesterday
+      completed: true,
+    },
+    {
+      id: '5',
+      title: 'Write journal entry',
+      date: new Date(Date.now() - 172800000), // 2 days ago
+      completed: false,
+    },
   ]);
 
   const handleAddTask = (title: string, date: Date) => {
