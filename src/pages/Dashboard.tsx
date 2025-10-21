@@ -100,26 +100,28 @@ const Dashboard = () => {
     },
   ]);
 
-  // Mock chart data - will be replaced with Firebase
+  // Mock chart data comparing all users - will be replaced with Firebase
   const chartData = {
     dailyCompletion: [
-      { date: 'Mon', completion: 75 },
-      { date: 'Tue', completion: 50 },
-      { date: 'Wed', completion: 100 },
-      { date: 'Thu', completion: 75 },
-      { date: 'Fri', completion: 25 },
-      { date: 'Sat', completion: 75 },
-      { date: 'Sun', completion: 75 },
+      { date: 'Mon', warrior: 75, champion: 100, knight: 50, guardian: 75 },
+      { date: 'Tue', warrior: 50, champion: 75, knight: 75, guardian: 50 },
+      { date: 'Wed', warrior: 100, champion: 50, knight: 100, guardian: 75 },
+      { date: 'Thu', warrior: 75, champion: 100, knight: 75, guardian: 100 },
+      { date: 'Fri', warrior: 25, champion: 75, knight: 50, guardian: 75 },
+      { date: 'Sat', warrior: 75, champion: 100, knight: 75, guardian: 50 },
+      { date: 'Sun', warrior: 75, champion: 50, knight: 100, guardian: 100 },
     ],
     weeklyStatus: [
-      { task: 'Build Project', completed: 100 },
-      { task: 'Workout 5x', completed: 60 },
+      { user: 'Winter Warrior', completed: 80 },
+      { user: 'Frost Champion', completed: 90 },
+      { user: 'Ice Knight', completed: 70 },
+      { user: 'Snow Guardian', completed: 75 },
     ],
     overallGrowth: [
-      { week: 'Week 1', points: 15 },
-      { week: 'Week 2', points: 22 },
-      { week: 'Week 3', points: 18 },
-      { week: 'Week 4', points: 27 },
+      { week: 'Week 1', warrior: 15, champion: 18, knight: 12, guardian: 14 },
+      { week: 'Week 2', warrior: 22, champion: 20, knight: 18, guardian: 19 },
+      { week: 'Week 3', warrior: 18, champion: 25, knight: 21, guardian: 17 },
+      { week: 'Week 4', warrior: 27, champion: 24, knight: 22, guardian: 26 },
     ],
   };
 

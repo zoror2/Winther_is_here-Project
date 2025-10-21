@@ -40,6 +40,11 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
     new Date(b).getTime() - new Date(a).getTime()
   );
 
+  // Only show today and yesterday
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const yesterday = format(new Date(Date.now() - 86400000), 'yyyy-MM-dd');
+  const recentDates = sortedDates.filter(date => date === today || date === yesterday);
+
   if (tasks.length === 0) {
     return (
       <div className="frost-card p-8 text-center">
@@ -102,7 +107,7 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
       <div className="space-y-4">
         <h2 className="text-xl font-heading font-semibold text-primary">Daily Tasks</h2>
         
-        {sortedDates.map((dateKey) => (
+        {recentDates.map((dateKey) => (
         <div key={dateKey} className="frost-card p-5 space-y-3 animate-slide-up">
           <h3 className="font-heading font-semibold text-lg text-foreground border-b border-primary/20 pb-2">
             {format(new Date(dateKey), 'EEEE, MMMM d, yyyy')}
