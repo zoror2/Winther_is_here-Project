@@ -8,6 +8,8 @@ interface Task {
   title: string;
   date: Date;
   completed: boolean;
+  type: 'daily' | 'weekly';
+  weekStart?: Date;
 }
 
 interface TaskListProps {
@@ -20,8 +22,12 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
     return isBefore(startOfDay(taskDate), startOfDay(new Date()));
   };
 
-  // Group tasks by date
-  const tasksByDate = tasks.reduce((acc, task) => {
+  // Separate daily and weekly tasks
+  const dailyTasks = tasks.filter(t => t.type === 'daily');
+  const weeklyTasks = tasks.filter(t => t.type === 'weekly');
+
+  // Group daily tasks by date
+  const dailyTasksByDate = dailyTasks.reduce((acc, task) => {
     const dateKey = format(task.date, 'yyyy-MM-dd');
     if (!acc[dateKey]) {
       acc[dateKey] = [];
@@ -30,7 +36,7 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
     return acc;
   }, {} as Record<string, Task[]>);
 
-  const sortedDates = Object.keys(tasksByDate).sort((a, b) => 
+  const sortedDates = Object.keys(dailyTasksByDate).sort((a, b) => 
     new Date(b).getTime() - new Date(a).getTime()
   );
 
@@ -43,17 +49,67 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-heading font-semibold text-primary">Your Tasks</h2>
-      
-      {sortedDates.map((dateKey) => (
+    <div className="space-y-6">
+      {/* Weekly Tasks Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-heading font-semibold text-primary">Weekly Goals</h2>
+        <div className="frost-card p-5 space-y-3">
+          <h3 className="font-heading font-semibold text-lg text-foreground border-b border-primary/20 pb-2">
+            This Week
+          </h3>
+          <div className="space-y-2">
+            {weeklyTasks.map((task) => {
+              const isDisabled = false; // Weekly tasks are always editable
+              
+              return (
+                <div
+                  key={task.id}
+                  className={cn(
+                    "flex items-center gap-3 p-3 rounded-lg border transition-all duration-300",
+                    task.completed 
+                      ? "bg-muted/30 border-primary/20 opacity-60" 
+                      : "bg-input/30 border-primary/30 hover:border-primary/50"
+                  )}
+                >
+                  <Checkbox
+                    id={task.id}
+                    checked={task.completed}
+                    onCheckedChange={() => onToggleTask(task.id)}
+                    className="border-primary data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  />
+                  <label
+                    htmlFor={task.id}
+                    className={cn(
+                      "flex-1 transition-all duration-300 cursor-pointer",
+                      task.completed 
+                        ? "line-through text-muted-foreground" 
+                        : "text-foreground"
+                    )}
+                  >
+                    {task.title}
+                  </label>
+                  {task.completed && (
+                    <Check className="w-5 h-5 text-primary animate-slide-up" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Daily Tasks Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-heading font-semibold text-primary">Daily Tasks</h2>
+        
+        {sortedDates.map((dateKey) => (
         <div key={dateKey} className="frost-card p-5 space-y-3 animate-slide-up">
           <h3 className="font-heading font-semibold text-lg text-foreground border-b border-primary/20 pb-2">
             {format(new Date(dateKey), 'EEEE, MMMM d, yyyy')}
           </h3>
           
           <div className="space-y-2">
-            {tasksByDate[dateKey].map((task) => {
+            {dailyTasksByDate[dateKey].map((task) => {
               const isPastTask = isTaskFromPast(task.date);
               const isDisabled = isPastTask && !task.completed;
               
@@ -103,6 +159,7 @@ const TaskList = ({ tasks, onToggleTask }: TaskListProps) => {
           </div>
         </div>
       ))}
+      </div>
     </div>
   );
 };

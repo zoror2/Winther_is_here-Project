@@ -47,6 +47,29 @@ const Profile = () => {
 
   const user = userData[userId as keyof typeof userData] || userData['1'];
 
+  // Mock chart data
+  const chartData = {
+    dailyCompletion: [
+      { date: 'Mon', completion: 75 },
+      { date: 'Tue', completion: 50 },
+      { date: 'Wed', completion: 100 },
+      { date: 'Thu', completion: 75 },
+      { date: 'Fri', completion: 25 },
+      { date: 'Sat', completion: 75 },
+      { date: 'Sun', completion: 75 },
+    ],
+    weeklyStatus: [
+      { task: 'Build Project', completed: 100 },
+      { task: 'Workout 5x', completed: 60 },
+    ],
+    overallGrowth: [
+      { week: 'Week 1', points: 15 },
+      { week: 'Week 2', points: 22 },
+      { week: 'Week 3', points: 18 },
+      { week: 'Week 4', points: 27 },
+    ],
+  };
+
   return (
     <div className="min-h-screen pb-20 relative overflow-hidden">
       <SnowEffect />
@@ -73,7 +96,7 @@ const Profile = () => {
 
         {/* Progress Charts */}
         <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <ProgressChart />
+          <ProgressChart data={chartData} />
         </div>
       </div>
 
